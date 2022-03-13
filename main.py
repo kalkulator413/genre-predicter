@@ -12,7 +12,5 @@ while 1:
       text, artist, song, link = get_genre(song, artist)
       text = text.split('\n')
       graphics(text, song, artist, link)
-    except Exception as e:
+    except IndexError as e:
         print('Could not find the song!')
-        raise Exception('Song Not Found')
-        # print(e)
