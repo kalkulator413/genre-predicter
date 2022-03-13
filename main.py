@@ -1,9 +1,5 @@
 from graphics import graphics
-# from functions import get_genre
-import dill as pickle
-
-with open('get_genre', 'rb') as f: 
-    get_genre = pickle.load(f)
+from functions import get_genre
 
 while 1:
     print('>>> Enter song:')
