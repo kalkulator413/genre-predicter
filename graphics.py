@@ -16,7 +16,7 @@ def graphics(text, song, artist, link):
 
   req = urllib.request.urlopen(link)
   arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
-  pic = cv2.imdecode(arr, -1) # 'Load it as it is'
+  pic = cv2.imdecode(arr, cv2.IMREAD_COLOR) # 'Load it as it is'
   pic = cv2.resize(pic, (110,110), interpolation = cv2.INTER_AREA)
 
   img[20:130,20:130] = pic[0:110,0:110]
