@@ -9,8 +9,8 @@ while 1:
     artist = input()
 
     try:
-      text, artist, song, link = get_genre(song, artist)
-      text = text.split('\n')
-      graphics(text, song, artist, link)
+        text, artist, song, link = get_genre(song, artist)
+        text = text.split('\n')
+        graphics(text, song, artist, link)
     except IndexError as e:
         print('Could not find the song!')
