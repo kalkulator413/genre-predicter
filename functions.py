@@ -1,11 +1,12 @@
 import pickle
 import torch
 import numpy as np
+from env import *
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-client_credentials_manager = SpotifyClientCredentials()
+client_credentials_manager = SpotifyClientCredentials(SPOTIPY_CID, SPOTIPY_SECRET)
 sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
 
 with open('model', 'rb') as f: 
