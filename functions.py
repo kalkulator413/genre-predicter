@@ -3,9 +3,7 @@ import numpy as np
 
 genres = ['electronic', 'folk', 'hip_hop', 'jazz', 'pop', 'rock']
 
-def get_song_tensor(name, artist, cache, sp):
-  if (name, artist) in cache:
-    return cache[(name, artist)]
+def get_song_tensor(name, artist, sp):
 
   results = sp.search(q="track:" + name + " artist:" + artist, type="track")
   track_id = results['tracks']['items'][0]['id']
@@ -27,10 +25,10 @@ def get_song_tensor(name, artist, cache, sp):
   ])
   song = torch.tensor(song).reshape(9).float()
   cache[(name, artist)] = (song, img_link)
-  return song, img_link
+  return song, img_link, artist, name
 
-def get_genre(name, artist, cache, model, sp):
-  song, img_link = get_song_tensor(name, artist, cache, sp)  
+def get_genre(name, artist, model, sp):
+  song, img_link, artist, name = get_song_tensor(name, artist, cache, sp)  
 
   t = model(song)
   value = (t == max(t)).nonzero(as_tuple=True)[0].detach()

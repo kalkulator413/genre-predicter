@@ -1,5 +1,17 @@
 from graphics import graphics
 from functions import get_genre
+from env import *
+
+import pickle
+import torch
+with open('model', 'rb') as f: 
+    model  = pickle.load(f).to(torch.device('cpu'))
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
+client_credentials_manager = SpotifyClientCredentials(SPOTIPY_CID, SPOTIPY_SECRET)
+sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
+
 
 while 1:
     print('>>> Enter song:')
