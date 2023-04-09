@@ -45,7 +45,7 @@ def get_genre(name, artist, cache, model, sp):
     for val in t_list:
       sum += val.item()
     secondary_confidence = max(t_list) / sum
-    if secondary_confidence > .5:
+    if secondary_confidence > .6:
       to_return += f'Secondary genre: {secondary_genre} ({round(int(10000*secondary_confidence))/100}% confidence)\n'
 
   return to_return, artist, name, img_link
