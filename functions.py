@@ -1,22 +1,12 @@
-import pickle
 import torch
 import numpy as np
-from env import *
 
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
+genres = ['electronic', 'folk', 'hip_hop', 'jazz', 'pop', 'rock']
 
-client_credentials_manager = SpotifyClientCredentials(SPOTIPY_CID, SPOTIPY_SECRET)
-sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
+def get_song_tensor(name, artist, cache, sp):
+  if (name, artist) in cache:
+    return cache[(name, artist)]
 
-with open('model', 'rb') as f: 
-    model  = pickle.load(f)
-
-genres = ['folk', 'rock', 'pop', 'hip-hop', 'electronic']
-tempo_max = 220
-loudness_max = -60
-
-def get_genre(name, artist):
   results = sp.search(q="track:" + name + " artist:" + artist, type="track")
   track_id = results['tracks']['items'][0]['id']
   artist = results['tracks']['items'][0]['artists'][0]['name']
@@ -27,15 +17,20 @@ def get_genre(name, artist):
   song = np.array([
       f['danceability'], 
       f['energy'], 
-      f['loudness']/loudness_max, 
+      f['loudness'], 
       f['speechiness'], 
       f['acousticness'], 
       f['instrumentalness'], 
       f['liveness'], 
       f['valence'], 
-      f['tempo']/tempo_max
+      f['tempo']
   ])
   song = torch.tensor(song).reshape(9).float()
+  cache[(name, artist)] = (song, img_link)
+  return song, img_link
+
+def get_genre(name, artist, cache, model, sp):
+  song, img_link = get_song_tensor(name, artist, cache, sp)  
 
   t = model(song)
   value = (t == max(t)).nonzero(as_tuple=True)[0].detach()
