@@ -7,3 +7,4 @@
 ![image](https://user-images.githubusercontent.com/50224596/158076170-25895797-f7a3-4c49-bedc-c306bf594f71.png)
 ![image](https://user-images.githubusercontent.com/50224596/157525203-5561b414-612c-4461-83ae-c1e07e6d9657.png)
 - can determine folk vs rock vs hip hop vs pop vs electronic vs jazz with 57% classification accuracy
+- todo: remove jazz again cuz that killed the accuracy :skull:

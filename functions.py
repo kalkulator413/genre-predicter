@@ -2,10 +2,11 @@ import torch
 import numpy as np
 
 genres = ['electronic', 'folk', 'hip_hop', 'jazz', 'pop', 'rock']
-
-def get_song_tensor(name, artist, cache, sp):
-  if (name, artist) in cache:
-    return cache[(name, artist)]
+min_tempo = 0
+max_tempo = 222.605
+min_loudness = -60.0
+max_loudness = 2.383
+def get_song_tensor(name, artist, sp):
 
   results = sp.search(q="track:" + name + " artist:" + artist, type="track")
   track_id = results['tracks']['items'][0]['id']
@@ -15,22 +16,21 @@ def get_song_tensor(name, artist, cache, sp):
 
   f = sp.audio_features(track_id)[0]
   song = np.array([
-      f['danceability'], 
-      f['energy'], 
-      f['loudness'], 
-      f['speechiness'], 
-      f['acousticness'], 
-      f['instrumentalness'], 
-      f['liveness'], 
-      f['valence'], 
-      f['tempo']
+    f['danceability'], 
+    f['energy'], 
+    (f['loudness'] - min_loudness) / (max_loudness - min_loudness), 
+    f['speechiness'], 
+    f['acousticness'], 
+    f['instrumentalness'], 
+    f['liveness'], 
+    f['valence'], 
+    (f['tempo'] - min_tempo) / (max_tempo - min_tempo)
   ])
   song = torch.tensor(song).reshape(9).float()
-  cache[(name, artist)] = (song, img_link)
-  return song, img_link
+  return song, img_link, artist, name
 
-def get_genre(name, artist, cache, model, sp):
-  song, img_link = get_song_tensor(name, artist, cache, sp)  
+def get_genre(name, artist, model, sp):
+  song, img_link, artist, name = get_song_tensor(name, artist, sp)  
 
   t = model(song)
   value = (t == max(t)).nonzero(as_tuple=True)[0].detach()
