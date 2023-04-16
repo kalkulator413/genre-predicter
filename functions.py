@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-genres = ['electronic', 'folk', 'hip_hop', 'jazz', 'pop', 'rock']
+genres = ['electronic', 'folk', 'hip_hop', 'jazz', 'rock']
 min_tempo = 0
 max_tempo = 222.605
 min_loudness = -60.0
@@ -27,7 +27,7 @@ def get_song_tensor(name, artist, sp):
     (f['tempo'] - min_tempo) / (max_tempo - min_tempo),
     1
   ])
-  song = torch.tensor(song).reshape(9).float()
+  song = torch.tensor(song).reshape(10).float()
   return song, img_link, artist, name
 
 def get_genre(name, artist, model, sp):
