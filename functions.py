@@ -24,7 +24,8 @@ def get_song_tensor(name, artist, sp):
     f['instrumentalness'], 
     f['liveness'], 
     f['valence'], 
-    (f['tempo'] - min_tempo) / (max_tempo - min_tempo)
+    (f['tempo'] - min_tempo) / (max_tempo - min_tempo),
+    1
   ])
   song = torch.tensor(song).reshape(9).float()
   return song, img_link, artist, name
